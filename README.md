@@ -1,1 +1,1 @@
-Math expression parser.
+Math parser and evaluator.

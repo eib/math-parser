@@ -1,6 +1,6 @@
 var readline = require('readline'),
     Scope = require('./lib/scope'),
-    parseExpression = require('./index').parseExpression,
+    parseExpression = require('./index').parse,
     scope = new Scope(),
     interface = readline.createInterface({
         input: process.stdin,

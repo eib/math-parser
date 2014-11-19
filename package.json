@@ -1,16 +1,18 @@
 {
-  "name": "function-parser",
+  "name": "math-parser",
   "version": "0.0.1",
-  "description": "math, function parse, parser",
+  "description": "Math parser and evaluator",
   "main": "index.js",
+  "repository": "https://github.com/eib/math-parser.git",
   "scripts": {
     "test": "make test"
   },
   "keywords": [
     "math",
-    "function",
     "expression",
-    "parse",
+    "equation",
+    "evaluate",
+    "function",
     "parser"
   ],
   "author": "Ethan Blackwelder <ethan@eblackwelder.com>",
