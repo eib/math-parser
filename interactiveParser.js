@@ -1,16 +1,17 @@
-var parseExpression = require('./index').parseExpression,
-    readline = require('readline'),
-    variables = { x: 5, y: 10 },
+var readline = require('readline'),
+    Scope = require('./lib/scope'),
+    parseExpression = require('./index').parseExpression,
+    scope = new Scope(),
     interface = readline.createInterface({
         input: process.stdin,
-        output: process.stdout,
+        output: process.stdout
     });
 
 interface.on('line', function (expression) {
     if (expression.length === 0) {
         process.exit(0);
     } else {
-        var value = parseExpression(expression, variables);
+        var value = parseExpression(expression, scope);
         console.log('Result: ' + value);
         interface.prompt();
     }

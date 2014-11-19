@@ -4,11 +4,11 @@ var tokenizer = require('./lib/tokenizer'),
     Scope = require('./lib/scope');
 
 module.exports = {
-    parseExpression: function (string, variables) {
+    parseExpression: function (string, scope) {
         var tokens = tokenizer.tokenize(string),
             stream = new TokenStream(tokens),
-            expression = parser.parse(stream),
-            scope = new Scope(variables);
+            expression = parser.parse(stream);
+        scope = scope || new Scope();
         return scope.resolve(expression);
-    },
+    }
 };

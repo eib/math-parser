@@ -1,8 +1,9 @@
 var parser = require('../lib/parser'),
     TokenStream = require('../lib/tokenStream'),
     Operation = require('../lib/tree/Operation'),
-    BinaryOp = require('../lib/tree/binaryOp'),
+    BinaryOp = require('../lib/tree/BinaryOp'),
     UnaryOp = require('../lib/tree/UnaryOp'),
+    Definition = require('../lib/tree/Definition'),
     expect = require('chai').expect;
 
 describe('Parser', function () {
@@ -11,9 +12,9 @@ describe('Parser', function () {
 
         it('should left-associate operators of equal precedence', function () {
             var actual = balanceOperation('-', BinaryOp('+', 'a', 'b'), 'c');
-            expect(actual instanceof BinaryOp).to.equal(true);
+            expect(actual).to.be.instanceof(BinaryOp);
             expect(actual.operator).to.equal('-');
-            expect(actual.leftOperand instanceof BinaryOp).to.equal(true);
+            expect(actual.leftOperand).to.be.instanceof(BinaryOp);
             expect(actual.leftOperand.operator).to.equal('+');
             expect(actual.leftOperand.leftOperand).to.equal('a');
             expect(actual.leftOperand.rightOperand).to.equal('b');
@@ -21,9 +22,9 @@ describe('Parser', function () {
         });
         it("should left-associate operators of lower precedence than the left-operand's operator", function () {
             var actual = balanceOperation('-', BinaryOp('*', 'a', 'b'), 'c');
-            expect(actual instanceof BinaryOp).to.equal(true);
+            expect(actual).to.be.instanceof(BinaryOp)
             expect(actual.operator).to.equal('-');
-            expect(actual.leftOperand instanceof BinaryOp).to.equal(true);
+            expect(actual.leftOperand).to.be.instanceof(BinaryOp);
             expect(actual.leftOperand.operator).to.equal('*');
             expect(actual.leftOperand.leftOperand).to.equal('a');
             expect(actual.leftOperand.rightOperand).to.equal('b');
@@ -31,20 +32,20 @@ describe('Parser', function () {
         });
         it("should right-associate operators of higher precedence than the left-operand's operator", function () {
             var actual = balanceOperation('*', BinaryOp('+', 'x', 'y'), 'z');
-            expect(actual instanceof BinaryOp).to.equal(true);
+            expect(actual).to.be.instanceof(BinaryOp)
             expect(actual.operator).to.equal('+');
             expect(actual.leftOperand).to.equal('x');
-            expect(actual.rightOperand instanceof BinaryOp).to.equal(true);
+            expect(actual.rightOperand).to.be.instanceof(BinaryOp);
             expect(actual.rightOperand.operator).to.equal('*');
             expect(actual.rightOperand.leftOperand).to.equal('y');
             expect(actual.rightOperand.rightOperand).to.equal('z');
         });
         it("should right-associate operators of higher precedence than the left-operand's operator", function () {
             var actual = balanceOperation('^', BinaryOp('/', 1, 2), 3);
-            expect(actual instanceof BinaryOp).to.equal(true);
+            expect(actual).to.be.instanceof(BinaryOp)
             expect(actual.operator).to.equal('/');
             expect(actual.leftOperand).to.equal(1);
-            expect(actual.rightOperand instanceof BinaryOp).to.equal(true);
+            expect(actual.rightOperand).to.be.instanceof(BinaryOp);
             expect(actual.rightOperand.operator).to.equal('^');
             expect(actual.rightOperand.leftOperand).to.equal(2);
             expect(actual.rightOperand.rightOperand).to.equal(3);
@@ -52,6 +53,13 @@ describe('Parser', function () {
     });
     describe('.parse()', function () {
         var parse = parser.parse;
+
+        it('should parse definitions', function () {
+            var actual = parse('x = 3');
+            expect(actual).to.be.instanceof(Definition);
+            expect(actual.name).to.equal('x');
+            expect(actual.value).to.equal(3);
+        });
 
         it('should convert number literals into Numbers', function () {
             var actual = parse('52');
