@@ -1,4 +1,4 @@
-var UnaryOp = require('../lib/tree/unaryOp'),
+var UnaryOp = require('../lib/tree/UnaryOp'),
     Scope = require('../lib/scope'),
     expect = require('chai').expect;
 

@@ -1,5 +1,5 @@
 var Scope = require('../lib/scope'),
-    UnaryOp = require('../lib/tree/unaryOp'),
+    UnaryOp = require('../lib/tree/UnaryOp'),
     BinaryOp = require('../lib/tree/binaryOp'),
     expect = require('chai').expect;
 
