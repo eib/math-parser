@@ -1,11 +1,34 @@
-var Scope = require('../lib/scope'),
+var parser = require('../lib/parser'),
+    Scope = require('../lib/scope'),
     UnaryOp = require('../lib/tree/UnaryOp'),
     BinaryOp = require('../lib/tree/BinaryOp'),
     Definition = require('../lib/tree/Definition'),
     expect = require('chai').expect;
 
 describe('Scope', function () {
+    describe('.define()', function () {
+        it('should add the variable to the .variables property', function () {
+            var scope = new Scope();
+            scope.define('x', 3);
+            expect(scope.variables.x).to.equal(3);
+        });
+        it('should allow the Scope to resolve references to it', function () {
+            var scope = new Scope();
+            scope.define('x', 5);
+            expect(scope.resolve('x')).to.equal(5);
+        });
+        it('should allow the Scope to resolve nested references to it', function () {
+            var scope = new Scope();
+            scope.define('x', 5);
+            expect(scope.resolve(BinaryOp('+', 'x', 3))).to.equal(8);
+        });
+    });
     describe('.resolve()', function () {
+        it('should resolve false-y variable values', function () {
+            var scope = new Scope();
+            scope.define('x', 0);
+            expect(scope.resolve('x')).to.equal(0);
+        });
         it('should add definitions to the scope', function () {
             var scope = new Scope();
             scope.resolve(new Definition('x', 3));

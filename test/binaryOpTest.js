@@ -1,4 +1,4 @@
-var BinaryOp = require('../lib/tree/binaryOp'),
+var BinaryOp = require('../lib/tree/BinaryOp'),
     Scope = require('../lib/scope'),
     expect = require('chai').expect;
 
