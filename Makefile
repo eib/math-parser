@@ -1,19 +1,21 @@
 CD=$(shell pwd)
-MOCHA=$(CD)/node_modules/.bin/mocha
-MOCHA_REPORTER ?= dot
+GULP=$(CD)/node_modules/.bin/gulp
 
 all: build test
 
 build:
 	# Nothing to build, yet.
 
+debug:
+	node-debug _mocha
+
 test:
 	# Running tests...
-	$(MOCHA) --reporter $(MOCHA_REPORTER)
+	$(GULP) tests
 	# Done.
 
 watch:
 	# Test watcher
-	$(MOCHA) --reporter $(MOCHA_REPORTER) --watch
+	$(GULP) watch
 
 .PHONY: all build test watch

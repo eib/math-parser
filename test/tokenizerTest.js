@@ -18,8 +18,18 @@ describe('tokenizer', function () {
         it('should group consecutive digits into a single number', function () {
             expect(tokenizer.tokenize('123')).to.deep.equal(['123']);
         });
-        it('should tokenize symbols individually', function () {
-            expect(tokenizer.tokenize('+-/*^()')).to.deep.equal(['+', '-', '/', '*', '^', '(', ')']);
+        it('should group consecutive operator symbols into a single operator', function () {
+            var allChars = '+-/*^!@#$%&_';
+            expect(tokenizer.tokenize(allChars)).to.deep.equal([allChars]);
+        });
+        it('should group operators and equal signs into a single operator', function () {
+            expect(tokenizer.tokenize('!==')).to.deep.equal(['!==']);
+        });
+        it('should not group parentheses with operator symbols', function () {
+            expect(tokenizer.tokenize('*(+=)-')).to.deep.equal(['*', '(', '+=', ')', '-']);
+        });
+        it('should not group commas with operator symbols', function () {
+            expect(tokenizer.tokenize('*,+')).to.deep.equal(['*', ',', '+']);
         });
         it('should split symbols from alpha characters', function () {
             expect(tokenizer.tokenize('z+b')).to.deep.equal(['z', '+', 'b']);
