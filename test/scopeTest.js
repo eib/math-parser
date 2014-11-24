@@ -41,10 +41,27 @@ describe('Scope', function () {
     });
 
     describe('.resolve()', function () {
+        it('should resolve "true" into boolean true', function () {
+            var actual = Scope().resolve('true');
+            expect(actual).to.equal(true);
+        });
+        it('should resolve "false" into boolean false', function () {
+            var actual = Scope().resolve('false');
+            expect(actual).to.equal(false);
+        });
         it('should resolve false-y variable values', function () {
             var scope = new Scope();
             scope.define('x', 0);
             expect(scope.resolve('x')).to.equal(0);
+        });
+        it('should resolve false-y function calls', function () {
+            var scope = new Scope(),
+                def = FunctionDefinition.fromExpression('f', 'x', ['x']),
+                call = FunctionCall('f', [0]),
+                actual;
+            scope.define(def);
+            actual = scope.resolve(call);
+            expect(actual).to.equal(0);
         });
         it('should add definitions to the scope', function () {
             var scope = new Scope();

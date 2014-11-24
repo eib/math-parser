@@ -11,8 +11,9 @@ interface.on('line', function (expression) {
     if (expression.length === 0) {
         process.exit(0);
     } else {
-        var value = parseExpression(expression, scope);
-        console.log('Result: ' + value);
+        var value = parseExpression(expression, scope),
+            output = (typeof value === 'function') ? '[function]' : value;
+        console.log('Result: ' + output);
         interface.prompt();
     }
 });
